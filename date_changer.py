@@ -4,7 +4,7 @@ Take a file with mm/dd/yy dates and change them to dd/mm/yy
 
 """
 import pandas as pd
-import argparse
+import argparse, datetime
 
 
 def getArgs():
@@ -23,5 +23,7 @@ def getArgs():
 
 args = getArgs()
 
-df = pd.read_csv(args.srcfile, parse_dates=args.datefield)
+mydateparser = lambda x: datetime.datetime.strptime(x, "%m/%d/%Y %I:%M:%S %p")
+
+df = pd.read_csv(args.srcfile, parse_dates=args.datefield, date_parser=mydateparser)
 df.to_csv(args.dstfile, index=False)
